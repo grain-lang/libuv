@@ -1,0 +1,61 @@
+{
+  "name": "libuv",
+  "version": "1.46.0",
+  "description": "Libuv packaged for esy.",
+  "author": "Blaine Bublitz <blaine@grain-lang.org>",
+  "license": "MIT",
+  "dependencies": {
+    "@opam/conf-cmake": "grain-lang/cmake:esy.json#1cead3871bbb27a45adab2263ef2dff4a38a8869"
+  },
+  "devDependencies": {},
+  "resolutions": {},
+  "esy": {
+    "build": [
+      [
+        "cmake",
+        "-S",
+        ".",
+        "-B",
+        "$cur__target_dir",
+        "-G",
+        "Unix Makefiles",
+        "-DCMAKE_INSTALL_PREFIX=$cur__install",
+        "-DBUILD_TESTING=OFF",
+        "#{os == 'windows' ? '-DCMAKE_TOOLCHAIN_FILE=$cur__root/cmake-toolchains/cross-mingw32.cmake' : ''}",
+        "#{os == 'windows' ? '-DHOST_ARCH=x86_64' : ''}"
+      ],
+      [
+        "cmake",
+        "--build",
+        "$cur__target_dir"
+      ],
+      [
+        "cmake",
+        "--install",
+        "$cur__target_dir"
+      ]
+    ],
+    "buildEnv": {
+      "PATH": "#{os == 'windows' ? '/usr/x86_64-w64-mingw32/sys-root/mingw/bin' : '' : $PATH }",
+      "CC": "#{os == 'windows' ? 'x86_64-w64-mingw32-gcc' : ''}",
+      "CXX": "#{os == 'windows' ? 'x86_64-w64-mingw32-g++' : ''}"
+    },
+    "exportedEnv": {
+      "PATH": {
+        "val": "#{os == 'windows' ? '/usr/x86_64-w64-mingw32/sys-root/mingw/bin' : '' : $PATH }",
+        "scope": "global"
+      }
+    }
+  },
+  "scripts": {},
+  "installConfig": {
+    "pnp": false
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "libuv",
+    "esy"
+  ]
+}
